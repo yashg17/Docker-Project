@@ -1,0 +1,25 @@
+services:
+  car-web-app:
+    build: 
+     context: .
+     dockerfile: Dockerfile
+    container_name: cars-web-prod
+    ports:
+     - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    networks:
+     - app-net
+
+networks:
+  app-net:
+    driver: bridge               
